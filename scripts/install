@@ -20,6 +20,7 @@ calibre_config_dir="$install_dir/config/.config/calibre"
 ynh_app_setting_set --key=calibre_config_dir --value=$calibre_config_dir
 
 timezone=$(timedatectl show --value --property=Timezone)
+main_domain=$(cat /etc/yunohost/current_host)
 
 cwa_release=$(ynh_app_upstream_version)
 

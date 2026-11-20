@@ -41,6 +41,7 @@ else
 	            --file="../conf/nginx.conf"
 fi
 
+main_domain=$(cat /etc/yunohost/current_host)
 ynh_config_change_url_nginx
 
 #=================================================
