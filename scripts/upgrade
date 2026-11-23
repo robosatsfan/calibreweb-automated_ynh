@@ -102,6 +102,7 @@ else
 fi
 
 # Create a dedicated nginx config
+portal_domain=$(_ynh_get_portal_domain "$domain")
 ynh_config_add_nginx
 
 #=================================================

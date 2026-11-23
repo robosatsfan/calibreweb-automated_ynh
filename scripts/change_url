@@ -41,6 +41,7 @@ else
 	            --file="../conf/nginx.conf"
 fi
 
+portal_domain=$(_ynh_get_portal_domain "$new_domain")
 ynh_config_change_url_nginx
 
 #=================================================
