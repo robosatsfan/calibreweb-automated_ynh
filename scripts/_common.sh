@@ -141,3 +141,25 @@ _ynh_adapt_cwa_db() {
   # Correct misc
   sqlite3 $install_dir/config/app.db "UPDATE settings SET config_external_port='$port'"
 }
+
+# YunoHost portal domain for a given domain, read from SSOwat's configuration.
+# Used to send the browser to the portal API logout, which is only valid on
+# the portal domain itself (the session cookie is bound to that host).
+_ynh_get_portal_domain() {
+  local domain="$1"
+  local portal_url portal_domain
+
+  portal_url=$(python3 -c 'import json,sys
+try:
+    print(json.load(open("/etc/ssowat/conf.json")).get("domain_portal_urls", {}).get(sys.argv[1], ""))
+except Exception:
+    print("")' "$domain" 2>/dev/null)
+  portal_domain="${portal_url%%/*}"
+
+  if [ -z "$portal_domain" ]; then
+    portal_domain=$(cat /etc/yunohost/current_host 2>/dev/null)
+    echo "Could not read the portal domain of $domain from /etc/ssowat/conf.json, falling back to $portal_domain. The YunoHost SSO logout may not work if the app is on a subdomain." >&2
+  fi
+
+  echo "$portal_domain"
+}
